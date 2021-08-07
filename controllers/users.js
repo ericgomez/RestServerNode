@@ -6,9 +6,13 @@ const usersGet = (req, res = response) => {
   });
 };
 
-const usersPost = (req, res) => {
+const usersPost = (req, res = response) => {
+  const { name, age } = req.body;
+
   res.status(201).json({
     msg: 'post API - Controller',
+    name,
+    age,
   });
 };
 
