@@ -30,7 +30,8 @@ const usersPost = async (req, res = response) => {
 
 const usersPut = async (req, res = response) => {
   const { id } = req.params;
-  const { password, google, email, ...data } = req.body;
+  // Protect the application by excluding components that we do not want to add to the database
+  const { _id, password, google, email, ...data } = req.body;
 
   // TODO: Validate vs DB
   if (password) {
