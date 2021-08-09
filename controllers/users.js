@@ -58,6 +58,7 @@ const usersDelete = async (req, res = response) => {
   // Physical removal
   // const user = await User.findByIdAndDelete(id);
 
+  // Change the status to false by marking as deleted
   const user = await User.findByIdAndUpdate(id, { state: false });
 
   res.json({
