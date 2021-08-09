@@ -36,6 +36,10 @@ check('role').custom((role) => isRoleValid(role)),
     usersPut
   );
 
-router.delete('/:id', usersDelete);
+router.delete(
+  '/:id',
+  [check('id', 'The ID is invalid').isMongoId(), check('id').custom((id) => existUserById(id)), validateFields],
+  usersDelete
+);
 
 module.exports = router;
