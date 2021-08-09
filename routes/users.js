@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/users');
 const { validateFields } = require('../middlewares/validate-fields');
-const { isRoleValid } = require('../helpers/db-validators');
+const { isRoleValid, existEmail } = require('../helpers/db-validators');
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.post(
     check('password', 'The password requires more than 6 letters').isLength({ min: 6 }),
     check('email', 'The email is invalid').isEmail(),
     // check('role', 'The role is invalid').isIn('ADMIN_ROLE', 'USER_ROLE'),
+    check('email').custom((email) => existEmail(email)),
     check('role').custom((role) => isRoleValid(role)),
     validateFields, // Call Custom Middleware with the error
   ],

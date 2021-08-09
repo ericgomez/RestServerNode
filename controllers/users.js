@@ -15,14 +15,6 @@ const usersPost = async (req, res = response) => {
   const { name, email, password, role } = req.body;
   const user = new User({ name, email, password, role }); // Add and validate defined fields
 
-  // Check if the mail exists
-  const existEmail = await User.findOne({ email });
-  if (existEmail) {
-    return res.status(400).json({
-      msg: 'The email already exists',
-    });
-  }
-
   // Encrypt password
   const salt = bcryptjs.genSaltSync();
   user.password = bcryptjs.hashSync(password, salt);
