@@ -51,12 +51,35 @@ const googleSignin = async (req = request, res = response) => {
   const { id_token } = req.body;
 
   try {
-    const googleUser = await googleVerify(id_token);
-    //console.log(googleUser);
+    const { name, email, img } = await googleVerify(id_token);
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const data = {
+        name,
+        email,
+        password: ':P',
+        img,
+        google: true,
+      };
+
+      user = new User(data);
+      await user.save();
+    }
+
+    if (!user.state) {
+      return res.status(404).json({
+        msg: 'User not register with Google',
+      });
+    }
+
+    // Generate JWT
+    const token = await generateJWT(user.id);
 
     res.json({
-      msg: 'Todo ok! google signin',
-      id_token,
+      user,
+      token,
     });
   } catch (error) {
     res.status(400).json({
