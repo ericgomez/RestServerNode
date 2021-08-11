@@ -35,7 +35,8 @@ const UserSchema = Schema({
 // The next method allows extract the information necessary from the response
 UserSchema.methods.toJSON = function () {
   // Extract from the answer the __v, password and the rest of information tha save in tha variable user
-  const { __v, password, ...user } = this.toObject();
+  const { __v, password, _id, ...user } = this.toObject();
+  user.uid = _id;
   // return the information of the user
   return user;
 };
