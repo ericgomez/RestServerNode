@@ -55,6 +55,8 @@ const usersPut = async (req, res = response) => {
 const usersDelete = async (req, res = response) => {
   const { id } = req.params;
 
+  // const uid = req.uid; // Note: get uid from validateJWT assigned in the line 18
+
   // Physical removal
   // const user = await User.findByIdAndDelete(id);
 
