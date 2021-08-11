@@ -55,16 +55,17 @@ const usersPut = async (req, res = response) => {
 const usersDelete = async (req, res = response) => {
   const { id } = req.params;
 
-  // const uid = req.uid; // Note: get uid from validateJWT assigned in the line 18
-
   // Physical removal
   // const user = await User.findByIdAndDelete(id);
 
   // Change the status to false by marking as deleted
   const user = await User.findByIdAndUpdate(id, { state: false });
 
+  // const authenticatedUser = req.user; // Note: get uid from validateJWT assigned in the line 23
+
   res.json({
     user,
+    //authenticatedUser,
   });
 };
 
