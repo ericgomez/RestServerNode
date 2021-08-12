@@ -25,17 +25,16 @@ router.post(
   usersPost
 );
 
-check('role').custom((role) => isRoleValid(role)),
-  router.put(
-    '/:id',
-    [
-      check('id', 'The ID is invalid').isMongoId(),
-      check('id').custom((id) => existUserById(id)),
-      check('role').custom((role) => isRoleValid(role)),
-      validateFields,
-    ],
-    usersPut
-  );
+router.put(
+  '/:id',
+  [
+    check('id', 'The ID is invalid').isMongoId(),
+    check('id').custom((id) => existUserById(id)),
+    check('role').custom((role) => isRoleValid(role)),
+    validateFields,
+  ],
+  usersPut
+);
 
 router.delete(
   '/:id',
