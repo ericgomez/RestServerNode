@@ -32,6 +32,7 @@ const ProductSchema = Schema({
     type: Boolean,
     default: true,
   },
+  img: { type: String },
 });
 
 // The next method allows extract the information necessary from the response

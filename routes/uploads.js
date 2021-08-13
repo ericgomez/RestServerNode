@@ -14,7 +14,7 @@ router.put(
   '/:collection/:id',
   [
     check('id', 'The ID is invalid').isMongoId(),
-    check('collection').custom((c) => allowedCollections(c, ['users', ['products']])),
+    check('collection').custom((c) => allowedCollections(c, ['users', 'products'])),
     validateFields,
   ],
   updateFile
