@@ -1,37 +1,16 @@
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-
 const { request, response } = require('express');
+const { uploadFile } = require('../helpers');
 
-const loadFile = (req = request, res = response) => {
+const loadFile = async (req = request, res = response) => {
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.myFile) {
     res.status(400).json({ msg: 'No files were uploaded.' });
     return;
   }
 
-  const { myFile } = req.files;
+  const name = await uploadFile(req.files);
 
-  const nameChunk = myFile.name.split('.');
-  const extension = nameChunk[nameChunk.length - 1];
-
-  // extension validate
-  const extensionValidate = ['png', 'jpg', 'jpeg', 'gif'];
-
-  if (!extensionValidate.includes(extension)) {
-    return res.status(400).json({
-      msg: `The extension ${extension} is not valid`,
-    });
-  }
-
-  const nameTemp = uuidv4() + '.' + extension;
-  const uploadPath = path.join(__dirname, '../uploads/', nameTemp);
-
-  myFile.mv(uploadPath, (err) => {
-    if (err) {
-      return res.status(500).send({ err });
-    }
-
-    res.json({ msg: 'File uploaded to ' + uploadPath });
+  res.json({
+    name,
   });
 };
 
