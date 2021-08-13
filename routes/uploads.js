@@ -1,12 +1,23 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validateFields } = require('../middlewares/validate-fields');
-const { loadFile } = require('../controllers/uploads');
+const { validateFields } = require('../middlewares');
+const { loadFile, updateFile } = require('../controllers/uploads');
+const { allowedCollections } = require('../helpers');
 
 const router = Router();
 
 // The function validateFields is required to make it work the message of express-validator
 router.post('/', loadFile);
+
+router.put(
+  '/:collection/:id',
+  [
+    check('id', 'The ID is invalid').isMongoId(),
+    check('collection').custom((c) => allowedCollections(c, ['users', ['products']])),
+    validateFields,
+  ],
+  updateFile
+);
 
 module.exports = router;
