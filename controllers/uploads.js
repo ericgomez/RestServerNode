@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const { request, response } = require('express');
 const { uploadFile } = require('../helpers');
 
@@ -43,6 +46,15 @@ const updateFile = async (req = request, res = response) => {
       return res.status(500).json({
         msg: 'Internal Error',
       });
+  }
+
+  // clean preview file
+  if (model.img) {
+    // delete image of server
+    const pathImage = path.join(__dirname, '../uploads', collection, model.img);
+    if (fs.existsSync(pathImage)) {
+      fs.unlinkSync(pathImage);
+    }
   }
 
   // Create folder with name the collection
