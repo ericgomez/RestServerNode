@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const Role = require('../models/role');
-const { Category } = require('../models');
+const { Category, Product } = require('../models');
 
 const isRoleValid = async (role) => {
   // Call Custom Middleware with the error
@@ -31,9 +31,17 @@ const existCategoryById = async (id) => {
   }
 };
 
+const existProductById = async (id) => {
+  const existProduct = await Product.findById(id);
+  if (!existProduct) {
+    throw new Error(`The ID ${id} the product not exists in the BD`);
+  }
+};
+
 module.exports = {
   isRoleValid,
   existEmail,
   existUserById,
   existCategoryById,
+  existProductById,
 };
