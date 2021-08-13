@@ -14,6 +14,19 @@ const userSearch = async (end = '', res = response) => {
       results: user ? [user] : [], // Validate
     });
   }
+
+  // TODO: expression insensitive a uppercase and lowercase of the
+  const regex = new RegExp(end, 'i');
+
+  // TODO: search by name o email in DB
+  const users = await User.find({
+    $or: [{ name: regex }, { email: regex }],
+    $and: [{ state: true }],
+  }); // search by name
+
+  res.json({
+    results: users,
+  });
 };
 
 const search = (req = request, res = response) => {
