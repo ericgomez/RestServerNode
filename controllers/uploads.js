@@ -105,7 +105,8 @@ const showImage = async (req = request, res = response) => {
     }
   }
 
-  res.json({ msg: 'the image is missing' });
+  const pathImage = path.join(__dirname, '../assets/no-image.jpg');
+  res.sendFile(pathImage);
 };
 
 module.exports = {
