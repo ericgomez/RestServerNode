@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
+const cloudinary = require('cloudinary').v2;
+cloudinary.config(process.env.CLOUDINARY_URL); // Configuration
+
 const { request, response } = require('express');
 const { uploadFile } = require('../helpers');
 
@@ -67,6 +70,53 @@ const updateFile = async (req = request, res = response) => {
   res.json(model);
 };
 
+const updateFileCloudinary = async (req = request, res = response) => {
+  const { id, collection } = req.params;
+
+  let model;
+
+  switch (collection) {
+    case 'users':
+      model = await User.findById(id);
+      if (!model) {
+        return res.status(400).json({
+          msg: `There is not user with the id ${id}`,
+        });
+      }
+      break;
+    case 'products':
+      model = await Product.findById(id);
+      if (!model) {
+        return res.status(400).json({
+          msg: `There is not product with the id ${id}`,
+        });
+      }
+      break;
+
+    default:
+      return res.status(500).json({
+        msg: 'Internal Error',
+      });
+  }
+
+  // clean preview file
+  if (model.img) {
+    // delete image of server
+  }
+
+  const { tempFilePath } = req.files.myFile;
+  // Extract of response the secure_url
+  const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
+
+  // save url in the model the img
+  model.img = secure_url;
+
+  // Save file en DB
+  await model.save();
+
+  res.json(model);
+};
+
 const showImage = async (req = request, res = response) => {
   const { id, collection } = req.params;
 
@@ -113,4 +163,5 @@ module.exports = {
   loadFile,
   updateFile,
   showImage,
+  updateFileCloudinary,
 };
