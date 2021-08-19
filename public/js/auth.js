@@ -25,6 +25,9 @@ form.addEventListener('submit', (event) => {
       }
 
       localStorage.setItem('token', token);
+
+      // redirection a chats
+      window.location = 'chat.html';
     })
     .catch((error) => {
       console.log(error);
@@ -49,6 +52,8 @@ function onSignIn(googleUser) {
     .then((resp) => resp.json())
     .then(({ token }) => {
       localStorage.setItem('token', token);
+      // redirection a chats
+      window.location = 'chat.html';
     })
     .catch(console.log);
 }

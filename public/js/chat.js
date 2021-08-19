@@ -23,6 +23,20 @@ const validateJWT = async () => {
   localStorage.setItem('token', tokenDB);
 
   user = userDB;
+
+  // change the name of navigator for the user active
+  document.title = user.name;
+
+  await connectSocket();
+};
+
+const connectSocket = async () => {
+  const socket = io({
+    // TODO: add extra headers
+    extraHeaders: {
+      'x-token': localStorage.getItem('token'),
+    },
+  });
 };
 
 const main = async () => {
@@ -31,5 +45,3 @@ const main = async () => {
 };
 
 main();
-
-// const socket = io();
