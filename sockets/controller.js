@@ -1,7 +1,10 @@
 const { Socket } = require('socket.io');
 const { checkJWT } = require('../helpers');
+const { ChatMessages } = require('../models');
 
-const socketController = async (socket = new Socket()) => {
+const chatMessages = new ChatMessages();
+
+const socketController = async (socket = new Socket(), io) => {
   const token = socket.handshake.headers['x-token']; // TODO:  get extra token
   // Check token is valid
   const user = await checkJWT(token);
@@ -10,7 +13,15 @@ const socketController = async (socket = new Socket()) => {
     return socket.disconnect();
   }
 
-  console.log(user.name, 'connected');
+  // Add the user connect
+  chatMessages.connectUser(user);
+  io.emit('active-users', chatMessages.usersArr);
+
+  // clean with client disconnect
+  socket.on('disconnect', () => {
+    chatMessages.disconnectUser(user._id);
+    io.emit('active-users', chatMessages.usersArr);
+  });
 };
 
 module.exports = {
