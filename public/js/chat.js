@@ -57,7 +57,7 @@ const connectSocket = async () => {
   // listening
   socket.on('receive-message', (payload) => {
     // TODO:
-    console.log(payload);
+    paintMessages(payload);
   });
 
   socket.on('active-users', (payload) => {
@@ -84,6 +84,22 @@ const paintUsers = (users = []) => {
   });
 
   ulUsers.innerHTML = usersHtml;
+};
+
+const paintMessages = (messages = []) => {
+  let messagesHtml = '';
+  messages.forEach(({ name, message }) => {
+    messagesHtml += `
+    <li>
+      <p>
+        <span class='text-primary'>${name}: </span>
+        <span>${message}</span>
+      </p>
+    </li>
+    `;
+  });
+
+  ulMessage.innerHTML = messagesHtml;
 };
 
 // check KeyCode of Enter is equal 13
