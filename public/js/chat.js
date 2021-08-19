@@ -65,8 +65,9 @@ const connectSocket = async () => {
     paintUsers(payload);
   });
 
-  socket.on('private-message', () => {
+  socket.on('private-message', (payload) => {
     // TODO:
+    console.log('Private:', payload);
   });
 };
 
