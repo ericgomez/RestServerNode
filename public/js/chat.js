@@ -55,8 +55,9 @@ const connectSocket = async () => {
   });
 
   // listening
-  socket.on('receive-message', () => {
+  socket.on('receive-message', (payload) => {
     // TODO:
+    console.log(payload);
   });
 
   socket.on('active-users', (payload) => {
@@ -84,6 +85,24 @@ const paintUsers = (users = []) => {
 
   ulUsers.innerHTML = usersHtml;
 };
+
+// check KeyCode of Enter is equal 13
+txtMessage.addEventListener('keyup', ({ keyCode }) => {
+  const message = txtMessage.value;
+  const uid = txtUid.value;
+
+  if (keyCode !== 13) {
+    return;
+  }
+
+  if (message.length === 0) {
+    return;
+  }
+
+  socket.emit('send-message', { message, uid });
+
+  txtMessage.value = '';
+});
 
 const main = async () => {
   // validate JWT

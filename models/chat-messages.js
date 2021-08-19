@@ -23,7 +23,8 @@ class ChatMessages {
 
   sendMessage(uid, name, message) {
     // insert message al start
-    this.message.unshift(new Message(uid, name, message));
+    console.log(uid, name, message);
+    this.messages.unshift(new Message(uid, name, message));
   }
 
   connectUser(user) {
